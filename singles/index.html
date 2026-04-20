@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Inglés — 3 Meses</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --cream: #f5f0e8;
+    --gold: #c9952a;
+    --gold-light: #f0d080;
+    --red: #c0392b;
+    --green: #1a6b3a;
+    --blue: #1a3a6b;
+    --blue-light: #e8eef8;
+    --gray: #5a5a5a;
+    --border: #d4c9b0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 30px,
+      rgba(201,149,42,0.06) 30px,
+      rgba(201,149,42,0.06) 31px
+    );
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 7vw, 72px);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero p {
+    font-size: 17px;
+    color: #aaa;
+    max-width: 520px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-label { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* MAIN */
+  main { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 60px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 24px; }
+  .section-subtitle { color: var(--gray); font-size: 15px; margin-bottom: 28px; }
+
+  /* PHASE CARDS */
+  .phases { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+  .phase {
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .phase:last-child { border-bottom: 1px solid var(--border); }
+  .phase-header {
+    display: flex;
+    align-items: stretch;
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-num {
+    width: 70px;
+    min-width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--cream);
+  }
+  .phase:nth-child(1) .phase-num { background: var(--blue); }
+  .phase:nth-child(2) .phase-num { background: var(--green); }
+  .phase:nth-child(3) .phase-num { background: var(--red); }
+  .phase-info { padding: 20px 20px 20px 24px; flex: 1; }
+  .phase-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .phase:nth-child(1) .phase-tag { color: var(--blue); }
+  .phase:nth-child(2) .phase-tag { color: var(--green); }
+  .phase:nth-child(3) .phase-tag { color: var(--red); }
+  .phase-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .phase-desc { font-size: 14px; color: var(--gray); margin-top: 4px; }
+  .phase-toggle {
+    display: flex; align-items: center; padding: 0 20px;
+    font-size: 20px; color: var(--gray);
+    transition: transform .3s;
+  }
+  .phase.open .phase-toggle { transform: rotate(180deg); }
+  .phase-body {
+    display: none;
+    padding: 0 24px 28px 94px;
+    border-top: 1px dashed var(--border);
+  }
+  .phase.open .phase-body { display: block; }
+
+  /* DAILY SCHEDULE */
+  .schedule-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .time-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 18px;
+    background: white;
+    border-left: 4px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+  }
+  .time-badge {
+    background: var(--ink);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    white-space: nowrap;
+    border-radius: 3px;
+    min-width: 65px;
+    text-align: center;
+  }
+  .time-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+  .time-content p { font-size: 13px; color: var(--gray); }
+
+  /* RESOURCES */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .resource-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    border-radius: 4px;
+    position: relative;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .resource-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .resource-type {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .rt-youtube { color: #cc0000; }
+  .rt-app { color: #7b2d8b; }
+  .rt-web { color: #1a6b3a; }
+  .rt-podcast { color: #e67e22; }
+  .resource-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+  .resource-desc { font-size: 13px; color: var(--gray); line-height: 1.5; }
+  .resource-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 1px;
+  }
+  .resource-free {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; padding: 3px 7px;
+    border-radius: 2px;
+  }
+  .free { background: #e8f5ee; color: var(--green); }
+  .paid { background: #fff3e0; color: #e67e22; }
+
+  /* TIPS TABLE */
+  .tips-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+  .tips-table th {
+    background: var(--ink); color: var(--cream);
+    padding: 12px 16px; text-align: left;
+    font-weight: 600; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .tips-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .tips-table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+  .tips-table tr:last-child td { border-bottom: none; }
+  .check { color: var(--green); font-weight: 700; font-size: 16px; }
+
+  /* WEEKLY TRACKER */
+  .tracker {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-top: 16px;
+  }
+  .days-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .day-chip {
+    width: 48px; height: 48px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+  }
+  .day-chip.done { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+  .day-chip:hover:not(.done) { border-color: var(--gold); color: var(--gold); }
+  .tracker-label { font-size: 13px; color: var(--gray); margin-top: 12px; }
+
+  /* MILESTONE */
+  .milestones { display: flex; flex-direction: column; gap: 0; position: relative; margin-top: 20px; }
+  .milestones::before {
+    content: ''; position: absolute; left: 20px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .milestone {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 0 0 28px 0; position: relative;
+  }
+  .milestone:last-child { padding-bottom: 0; }
+  .ms-dot {
+    width: 40px; min-width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    position: relative; z-index: 1;
+  }
+  .milestone:nth-child(1) .ms-dot { background: var(--blue); border-color: var(--blue); }
+  .milestone:nth-child(2) .ms-dot { background: var(--green); border-color: var(--green); }
+  .milestone:nth-child(3) .ms-dot { background: var(--red); border-color: var(--red); }
+  .ms-content { padding-top: 8px; }
+  .ms-month { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
+  .ms-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .ms-list { list-style: none; }
+  .ms-list li { font-size: 14px; color: var(--gray); padding: 3px 0; }
+  .ms-list li::before { content: '→ '; color: var(--gold); font-weight: 700; }
+
+  /* QUOTE */
+  .quote-block {
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    background: white;
+    margin: 40px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink);
+  }
+  .quote-block span { display: block; font-family: 'DM Sans', sans-serif; font-size: 13px; font-style: normal; color: var(--gray); margin-top: 10px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: #666;
+    text-align: center; padding: 30px;
+    font-size: 13px;
+  }
+  footer strong { color: var(--gold); }
+
+  /* TABS */
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-top: 20px; overflow-x: auto; }
+  .tab-btn {
+    padding: 10px 20px; font-size: 13px; font-weight: 600;
+    cursor: pointer; border: none; background: none;
+    color: var(--gray); white-space: nowrap;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    transition: all .2s; font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .tab-content { display: none; padding-top: 20px; }
+  .tab-content.active { display: block; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 40px 20px; }
+    .phase-body { padding-left: 20px; }
+    .hero-stats { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Plan de Estudio</div>
+  <h1>Tu inglés al<br><em>siguiente nivel</em></h1>
+  <p>Un plan intensivo de 3 meses para pasar de intermedio a intermedio-alto con solo 1 hora diaria.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">90</span><span class="stat-label">Días</span></div>
+    <div class="stat"><span class="stat-num">1h</span><span class="stat-label">Al día</span></div>
+    <div class="stat"><span class="stat-num">B2</span><span class="stat-label">Meta</span></div>
+    <div class="stat"><span class="stat-num">+4</span><span class="stat-label">Habilidades</span></div>
+  </div>
+</div>
+
+<main>
+
+<!-- OVERVIEW -->
+<p class="section-title"><span class="icon">🗺️</span> ¿Cómo está estructurado?</p>
+<p class="section-subtitle">Tres fases progresivas, cada una de un mes, enfocadas en distintas competencias.</p>
+
+<div class="phases">
+
+  <!-- FASE 1 -->
+  <div class="phase open" onclick="togglePhase(this)">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div class="phase-info">
+        <div class="phase-tag">Mes 1 — Semanas 1–4</div>
+        <div class="phase-title">Consolidar las bases</div>
+        <div class="phase-desc">Gramática esencial + vocabulario + comprensión auditiva</div>
+      </div>
+      <div class="phase-toggle">▾</div>
+    </div>
+    <div class="phase-body">
+      <p style="font-size:14px;color:var(--gray);margin-top:12px;margin-bottom:16px;">En esta fase eliminarás los "huecos" típicos del nivel intermedio: tiempos verbales, conectores, phrasal verbs y vocabulario cotidiano.</p>
+      <div class="schedule-grid">
+        <div class="time-block">
+          <div class="time-badge">0–15 min</div>
+          <div class="time-content">
+            <h4>🎧 Escucha activa</h4>
+            <p>Podcast o video en inglés con subtítulos en inglés (no español). Anota 5 palabras nuevas.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">15–35 min</div>
+          <div class="time-content">
+            <h4>📖 Gramática + Vocabulario</h4>
+            <p>Estudia un tema gramatical (ver lista abajo) + 10 flashcards en Anki.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">35–50 min</div>
+          <div class="time-content">
+            <h4>✍️ Escritura guiada</h4>
+            <p>Escribe 5–8 oraciones usando la gramática del día. Corrígelas con ChatGPT o LanguageTool.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">50–60 min</div>
+          <div class="time-content">
+            <h4>🗣️ Speaking en voz alta</h4>
+            <p>Lee en voz alta 5 min + repite frases del podcast en voz alta (shadowing básico).</p>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:20px;font-weight:600;font-size:14px;">📋 Temas gramaticales del mes 1:</p>
+      <ul style="font-size:13px;color:var(--gray);margin-top:8px;padding-left:20px;line-height:2;">
+        <li>Present Perfect vs Simple Past</li>
+        <li>Conditional 1 y 2 (If clauses)</li>
+        <li>Modal verbs (must, should, might, could...)</li>
+        <li>Phrasal verbs más comunes (top 50)</li>
+        <li>Reported speech básico</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="phase" onclick="togglePhase(this)">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div class="phase-info">
+        <div class="phase-tag">Mes 2 — Semanas 5–8</div>
+        <div class="phase-title">Fluidez y comunicación</div>
+        <div class="phase-desc">Conversación real + speaking + lectura extensa</div>
+      </div>
+      <div class="phase-toggle">▾</div>
+    </div>
+    <div class="phase-body">
+      <p style="font-size:14px;color:var(--gray);margin-top:12px;margin-bottom:16px;">Aquí el objetivo es hablar sin miedo. Introducirás conversación real con personas o herramientas de IA, y leerás textos auténticos.</p>
+      <div class="schedule-grid">
+        <div class="time-block">
+          <div class="time-badge">0–15 min</div>
+          <div class="time-content">
+            <h4>📰 Lectura auténtica</h4>
+            <p>Lee un artículo corto en BBC Learning English o una noticia en inglés simple. Resume en 2 frases.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">15–30 min</div>
+          <div class="time-content">
+            <h4>🗣️ Conversación o shadowing</h4>
+            <p>3 veces/semana: habla con Italki, Tandem o IA. Los otros días: shadowing con serie/video.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">30–50 min</div>
+          <div class="time-content">
+            <h4>🎬 Serie/película sin subs</h4>
+            <p>20 min de tu serie favorita en inglés, primero con subs en inglés, luego intenta sin ellos.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">50–60 min</div>
+          <div class="time-content">
+            <h4>📝 Anki + repaso</h4>
+            <p>Repasa flashcards del día y añade expresiones nuevas que hayas encontrado.</p>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:20px;font-weight:600;font-size:14px;">📋 Temas del mes 2:</p>
+      <ul style="font-size:13px;color:var(--gray);margin-top:8px;padding-left:20px;line-height:2;">
+        <li>Conditional 3 + mixed conditionals</li>
+        <li>Passive voice (all tenses)</li>
+        <li>Idioms y expresiones coloquiales (top 40)</li>
+        <li>Discourse markers (however, although, despite...)</li>
+        <li>Vocabulary por temas: trabajo, tecnología, viajes</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="phase" onclick="togglePhase(this)">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div class="phase-info">
+        <div class="phase-tag">Mes 3 — Semanas 9–12</div>
+        <div class="phase-title">Dominio y naturalidad</div>
+        <div class="phase-desc">Escritura avanzada + acento + inmersión total</div>
+      </div>
+      <div class="phase-toggle">▾</div>
+    </div>
+    <div class="phase-body">
+      <p style="font-size:14px;color:var(--gray);margin-top:12px;margin-bottom:16px;">Último tramo. Aquí consolidas todo, corriges el acento y empiezas a pensar EN inglés sin traducir.</p>
+      <div class="schedule-grid">
+        <div class="time-block">
+          <div class="time-badge">0–20 min</div>
+          <div class="time-content">
+            <h4>🎙️ Speaking avanzado</h4>
+            <p>Monologa 2 min sobre un tema aleatorio. Grábate. Escúchate. Mejora pronunciación.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">20–40 min</div>
+          <div class="time-content">
+            <h4>✍️ Writing estructurado</h4>
+            <p>Escribe un párrafo de opinión (150–200 palabras) con argumentos. Usa Grammarly para corregir.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">40–55 min</div>
+          <div class="time-content">
+            <h4>🎧 Listening sin subtítulos</h4>
+            <p>Podcast o TED Talk completo. Escribe los puntos principales sin pausar.</p>
+          </div>
+        </div>
+        <div class="time-block">
+          <div class="time-badge">55–60 min</div>
+          <div class="time-content">
+            <h4>🃏 Repaso Anki</h4>
+            <p>Solo las tarjetas pendientes. Mantén la racha.</p>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:20px;font-weight:600;font-size:14px;">📋 Temas del mes 3:</p>
+      <ul style="font-size:13px;color:var(--gray);margin-top:8px;padding-left:20px;line-height:2;">
+        <li>Subjunctive mood + advanced conditionals</li>
+        <li>Academic/formal writing expressions</li>
+        <li>Intonación y pronunciación (schwa, linking sounds)</li>
+        <li>Vocabulario avanzado (sinónimos formales e informales)</li>
+        <li>Revisión completa de errores propios del mes 1 y 2</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- RESOURCES -->
+<p class="section-title"><span class="icon">📦</span> Recursos recomendados</p>
+<p class="section-subtitle">Seleccionados por calidad, enfoque y accesibilidad. La mayoría son gratuitos.</p>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab(this, 'tab-youtube')">📺 YouTube</button>
+  <button class="tab-btn" onclick="switchTab(this, 'tab-apps')">📱 Apps</button>
+  <button class="tab-btn" onclick="switchTab(this, 'tab-web')">🌐 Webs</button>
+  <button class="tab-btn" onclick="switchTab(this, 'tab-podcast')">🎙️ Podcasts</button>
+</div>
+
+<div id="tab-youtube" class="tab-content active">
+  <div class="resources-grid">
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">BBC Learning English</div>
+      <div class="resource-desc">El canal más completo para niveles B1–B2. Tiene series específicas: 6 Minute English, English at Work, The English We Speak.</div>
+      <a class="resource-link" href="https://www.youtube.com/@BBCLearningEnglish" target="_blank">→ Ver canal</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">English with Lucy</div>
+      <div class="resource-desc">Pronunciación británica impecable. Sus videos de vocabulario y gramática son muy claros para nivel intermedio.</div>
+      <a class="resource-link" href="https://www.youtube.com/@EnglishwithLucy" target="_blank">→ Ver canal</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">EngVid</div>
+      <div class="resource-desc">Múltiples profesores nativos. Enorme biblioteca de lecciones organizadas por nivel y tema. Ideal para gramática.</div>
+      <a class="resource-link" href="https://www.youtube.com/@engvidenglish" target="_blank">→ Ver canal</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Speak English with Vanessa</div>
+      <div class="resource-desc">Excelente para speaking natural, expresiones coloquiales y fluidez. Muy recomendado para el mes 2.</div>
+      <a class="resource-link" href="https://www.youtube.com/@SpeakEnglishWithVanessa" target="_blank">→ Ver canal</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">TED-Ed / TED Talks</div>
+      <div class="resource-desc">Para listening avanzado. Activa subtítulos en inglés. Temas interesantes = motivación alta. Desde el mes 2.</div>
+      <a class="resource-link" href="https://www.youtube.com/@TED" target="_blank">→ Ver canal</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-youtube">▶ YouTube</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Dreaming Spanish (English)</div>
+      <div class="resource-desc">Método de input comprensible. Mira videos de temas que te gusten en inglés sin traducir. Inmersión pura.</div>
+      <a class="resource-link" href="https://www.youtube.com/@DreamingSpanish" target="_blank">→ Ver canal</a>
+    </div>
+  </div>
+</div>
+
+<div id="tab-apps" class="tab-content">
+  <div class="resources-grid">
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Anki</div>
+      <div class="resource-desc">La mejor app de flashcards del mundo. Usa repetición espaciada. Descarga el mazo "English Vocabulary" listo para usar. Imprescindible.</div>
+      <a class="resource-link" href="https://apps.ankiweb.net" target="_blank">→ Descargar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free paid">Freemium</div>
+      <div class="resource-name">Italki</div>
+      <div class="resource-desc">Habla con profesores o compañeros de idiomas reales. Una sesión de 30 min a la semana marca una diferencia enorme. Desde $5/hora.</div>
+      <a class="resource-link" href="https://www.italki.com" target="_blank">→ Ir a Italki</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Tandem</div>
+      <div class="resource-desc">Intercambio de idiomas. Habla con angloparlantes nativos que quieren aprender tu idioma. Completamente gratis.</div>
+      <a class="resource-link" href="https://www.tandem.net" target="_blank">→ Descargar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free paid">Freemium</div>
+      <div class="resource-name">Grammarly</div>
+      <div class="resource-desc">Corrector avanzado de inglés. Instala la extensión del navegador. Te explica cada error y por qué está mal. Ideal para el mes 3.</div>
+      <a class="resource-link" href="https://www.grammarly.com" target="_blank">→ Instalar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">ELSA Speak</div>
+      <div class="resource-desc">IA que analiza tu pronunciación y te da feedback en tiempo real. La mejor app para corregir el acento de habla hispana.</div>
+      <a class="resource-link" href="https://elsaspeak.com" target="_blank">→ Descargar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-app">◆ App</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">ChatGPT / Claude</div>
+      <div class="resource-desc">Úsalos como profesores 24/7. Pide que corrijan tus textos, que hablen contigo en inglés, que te expliquen gramática en contexto.</div>
+      <a class="resource-link" href="https://claude.ai" target="_blank">→ Hablar con Claude</a>
+    </div>
+  </div>
+</div>
+
+<div id="tab-web" class="tab-content">
+  <div class="resources-grid">
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">British Council</div>
+      <div class="resource-desc">Ejercicios interactivos de gramática, vocabulario, reading y listening. Tiene tests de nivel y material estructurado por nivel B1/B2.</div>
+      <a class="resource-link" href="https://learnenglish.britishcouncil.org" target="_blank">→ Ir a la web</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Merriam-Webster</div>
+      <div class="resource-desc">Diccionario monolingüe en inglés. Siempre busca definiciones en inglés, no en español. Activa el "Word of the Day".</div>
+      <a class="resource-link" href="https://www.merriam-webster.com" target="_blank">→ Ir a la web</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">News in Levels</div>
+      <div class="resource-desc">Noticias reales simplificadas en 3 niveles de dificultad. Con audio. Perfectas para reading + listening combinado.</div>
+      <a class="resource-link" href="https://www.newsinlevels.com" target="_blank">→ Ir a la web</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">LanguageTool</div>
+      <div class="resource-desc">Corrector gramatical gratuito. Pega tus textos escritos y te señala errores explicados. Alternativa gratis a Grammarly.</div>
+      <a class="resource-link" href="https://languagetool.org" target="_blank">→ Usar gratis</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Youglish</div>
+      <div class="resource-desc">Escribe cualquier palabra o frase y ve cómo la usan nativos en videos reales de YouTube. Ideal para ver pronunciación en contexto.</div>
+      <a class="resource-link" href="https://youglish.com" target="_blank">→ Probar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-web">🌐 Web</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Wordreference</div>
+      <div class="resource-desc">El mejor diccionario inglés–español bilingüe. Además tiene foros donde nativos explican matices de palabras y expresiones.</div>
+      <a class="resource-link" href="https://www.wordreference.com" target="_blank">→ Consultar</a>
+    </div>
+  </div>
+</div>
+
+<div id="tab-podcast" class="tab-content">
+  <div class="resources-grid">
+    <div class="resource-card">
+      <div class="resource-type rt-podcast">🎙️ Podcast</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">6 Minute English (BBC)</div>
+      <div class="resource-desc">Episodios cortos de 6 minutos sobre temas cotidianos. Con transcripción. El más recomendado para nivel B1–B2. Empieza aquí.</div>
+      <a class="resource-link" href="https://www.bbc.co.uk/learningenglish/english/features/6-minute-english" target="_blank">→ Escuchar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-podcast">🎙️ Podcast</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">All Ears English</div>
+      <div class="resource-desc">Podcast americano para aprender inglés natural y coloquial. Enfocado en conversación real. Muy bueno para el mes 2.</div>
+      <a class="resource-link" href="https://www.allearsenglish.com" target="_blank">→ Escuchar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-podcast">🎙️ Podcast</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">English Learning for Curious Minds</div>
+      <div class="resource-desc">Historias y temas interesantes narrados despacio y con claridad. Con transcripciones. Perfecto para escucha activa.</div>
+      <a class="resource-link" href="https://www.leonardoenglish.com/podcasts/a-history-of-the-world-in-100-words" target="_blank">→ Escuchar</a>
+    </div>
+    <div class="resource-card">
+      <div class="resource-type rt-podcast">🎙️ Podcast</div>
+      <div class="resource-free free">Gratis</div>
+      <div class="resource-name">Culips ESL Podcast</div>
+      <div class="resource-desc">Episodios de conversación natural entre dos hablantes. Explican el vocabulario usado. Excelente para nivel intermedio–alto.</div>
+      <a class="resource-link" href="https://www.culips.com" target="_blank">→ Escuchar</a>
+    </div>
+  </div>
+</div>
+
+<!-- MILESTONES -->
+<p class="section-title"><span class="icon">🏆</span> ¿Qué lograrás cada mes?</p>
+<p class="section-subtitle">Hitos concretos y medibles para que puedas notar tu progreso.</p>
+
+<div class="milestones">
+  <div class="milestone">
+    <div class="ms-dot">📘</div>
+    <div class="ms-content">
+      <div class="ms-month">Al finalizar el mes 1</div>
+      <div class="ms-title">Bases reforzadas</div>
+      <ul class="ms-list">
+        <li>Hablas sobre el pasado sin confundir tiempos verbales</li>
+        <li>Conoces y usas al menos 50 phrasal verbs</li>
+        <li>Entiendes el 70% de un podcast en inglés lento</li>
+        <li>Tienes 300+ flashcards en Anki consolidadas</li>
+      </ul>
+    </div>
+  </div>
+  <div class="milestone">
+    <div class="ms-dot">📗</div>
+    <div class="ms-content">
+      <div class="ms-month">Al finalizar el mes 2</div>
+      <div class="ms-title">Comunicación real</div>
+      <ul class="ms-list">
+        <li>Sostienes una conversación de 10 min sin pausas largas</li>
+        <li>Lees artículos en inglés sin diccionario</li>
+        <li>Entiendes series con subtítulos en inglés (sin español)</li>
+        <li>Usas expresiones idiomáticas de forma natural</li>
+      </ul>
+    </div>
+  </div>
+  <div class="milestone">
+    <div class="ms-dot">📕</div>
+    <div class="ms-content">
+      <div class="ms-month">Al finalizar el mes 3</div>
+      <div class="ms-title">Nivel B2 funcional</div>
+      <ul class="ms-list">
+        <li>Escribes emails y textos formales sin ayuda</li>
+        <li>Entiendes podcasts y noticias a velocidad normal</li>
+        <li>Piensas frases en inglés sin traducir del español</li>
+        <li>Tu pronunciación es notablemente más clara</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<p class="section-title"><span class="icon">⚡</span> Estrategias que marcan la diferencia</p>
+<p class="section-subtitle">Técnicas probadas que aceleran el aprendizaje de idiomas.</p>
+
+<table class="tips-table">
+  <thead>
+    <tr>
+      <th>Técnica</th>
+      <th>Qué es</th>
+      <th>Cuándo usarla</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Shadowing</strong></td>
+      <td>Repites lo que escuchas al mismo tiempo que el nativo habla, imitando entonación y ritmo.</td>
+      <td>Desde semana 1. Usa videos de BBC o Lucy.</td>
+    </tr>
+    <tr>
+      <td><strong>Inmersión pasiva</strong></td>
+      <td>Pones música, series o podcasts en inglés de fondo mientras haces otras cosas.</td>
+      <td>Todo el tiempo. Tu cerebro absorbe sin esfuerzo.</td>
+    </tr>
+    <tr>
+      <td><strong>Diario en inglés</strong></td>
+      <td>Escribes 3–5 frases al día sobre lo que hiciste. No importa que tenga errores.</td>
+      <td>Desde semana 2. 5 minutos antes de dormir.</td>
+    </tr>
+    <tr>
+      <td><strong>Pensar en inglés</strong></td>
+      <td>Cuando pienses en algo (compras, planes, pensamientos), intenta formularlo en inglés.</td>
+      <td>Desde semana 4. Empieza con cosas simples.</td>
+    </tr>
+    <tr>
+      <td><strong>Grabarte hablando</strong></td>
+      <td>Graba un monólogo de 2 min. Al escucharte identificas errores que no notas al hablar.</td>
+      <td>Desde mes 2. Una vez por semana.</td>
+    </tr>
+    <tr>
+      <td><strong>Cambiar el idioma del móvil</strong></td>
+      <td>Pon tu teléfono, apps favoritas y redes en inglés. Inmersión constante sin esfuerzo extra.</td>
+      <td>Desde semana 1. Es gratis y muy efectivo.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- QUOTE -->
+<div class="quote-block">
+  "The best time to start learning English was years ago. The second best time is today — and every single day after."
+  <span>— Principio del aprendizaje de idiomas</span>
+</div>
+
+<!-- TRACKER -->
+<p class="section-title"><span class="icon">📅</span> Tracker semanal</p>
+<p class="section-subtitle">Haz clic en los días para marcar tu progreso esta semana.</p>
+
+<div class="tracker">
+  <p style="font-size:14px;font-weight:600;">Semana actual — Marca los días que estudiaste:</p>
+  <div class="days-row" id="dayTracker">
+    <div class="day-chip" onclick="toggleDay(this)">Lun</div>
+    <div class="day-chip" onclick="toggleDay(this)">Mar</div>
+    <div class="day-chip" onclick="toggleDay(this)">Mié</div>
+    <div class="day-chip" onclick="toggleDay(this)">Jue</div>
+    <div class="day-chip" onclick="toggleDay(this)">Vie</div>
+    <div class="day-chip" onclick="toggleDay(this)">Sáb</div>
+    <div class="day-chip" onclick="toggleDay(this)">Dom</div>
+  </div>
+  <p class="tracker-label" id="trackerMsg">0 de 7 días esta semana. ¡Empieza hoy!</p>
+</div>
+
+</main>
+
+<footer>
+  Plan creado con <strong>Claude</strong> · Enfocado en nivel B1 → B2 · Actualiza tu progreso cada semana
+</footer>
+
+<script>
+  function togglePhase(el) {
+    el.classList.toggle('open');
+  }
+
+  function switchTab(btn, tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+  }
+
+  function toggleDay(el) {
+    el.classList.toggle('done');
+    updateTracker();
+  }
+
+  function updateTracker() {
+    const done = document.querySelectorAll('.day-chip.done').length;
+    const msgs = [
+      '0 de 7 días esta semana. ¡Empieza hoy!',
+      '1 de 7 días. ¡Buen comienzo!',
+      '2 de 7 días. Vas bien.',
+      '3 de 7 días. ¡Mitad de semana superada! 💪',
+      '4 de 7 días. Excelente constancia.',
+      '5 de 7 días. ¡Casi perfecto!',
+      '6 de 7 días. ¡Un día más y completas la semana!',
+      '7 de 7 días. 🏆 ¡Semana perfecta! Eso es dedicación.'
+    ];
+    document.getElementById('trackerMsg').textContent = msgs[done];
+  }
+</script>
+</body>
+</html>
